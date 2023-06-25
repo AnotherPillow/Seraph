@@ -16,6 +16,7 @@ src/main/kotlin/club/maxstats/seraph/util/Keys.kt
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.idea/
 
 ### Eclipse ###
 .apt_generated

@@ -22,7 +22,13 @@ import net.minecraft.world.WorldSettings
 
 class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOverlay(minecraft, guiIngame) {
     override fun renderPlayerlist(width: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
-        if (locrawInfo.inGame() && statTitles.isNotEmpty()) renderStatTab(width, scoreboard, objective)
+        if (locrawInfo.inGame() && statTitles.isNotEmpty()) {
+            try {
+                renderStatTab(width, scoreboard, objective)
+            } catch (e: Exception) {
+                super.renderPlayerlist(width, scoreboard, objective)
+            }
+        }
         else super.renderPlayerlist(width, scoreboard, objective)
     }
 
@@ -35,9 +41,8 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
     private fun renderStatTab(screenWidth: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
         val netHandler = mc.netHandler
         /* Grab downwards of 40 players, since we don't wrap players in the custom tab list */
-        val playerList = playerOrdering.sortedCopy(netHandler.playerInfoMap).subList(0,
-            netHandler.playerInfoMap.size.coerceAtMost(40)
-        )
+        val playerList = netHandler.playerInfoMap.values
+
 
         val width = (headSize + 2) * 2 +
                     maxNameLength + 10 +
